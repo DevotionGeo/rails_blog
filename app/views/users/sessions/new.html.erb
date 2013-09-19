@@ -1,0 +1,64 @@
+
+<style type="text/css">
+  /* Override some defaults */
+  html, body {
+    background-color: #eee;
+  }
+  body {
+    padding-top: 40px;
+  }
+
+  /* The white background content wrapper */
+  .content {
+    width: 450px;
+    background-color: #fff;
+    padding: 20px;
+    margin: 0;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  }
+
+
+</style>
+
+<div class="span3 offset2">
+  <div class="content">
+    <div class="row">
+      <div class="span3 offset1">
+        <% if alert  %>
+          <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <%= alert %>
+          </div>
+        <% end %>
+        <% if notice  %>
+          <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <%= notice %>
+          </div>
+        <% end %>
+        <h2>Sign in</h2>
+
+        <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+          <div><%= f.label :email %>
+            <%= f.email_field :email %></div>
+
+          <div><%= f.label :password %>
+            <%= f.password_field :password %></div>
+
+          <% if devise_mapping.rememberable? -%>
+            <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+          <% end -%>
+
+          <div><%= f.submit "Sign in" %></div>
+        <% end %>
+
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

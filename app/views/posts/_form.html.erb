@@ -1,0 +1,75 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    var tags = [];
+<% ["php", "ruby", "delphi"].each do |ava_tag| %>
+      tags.push("<%= ava_tag %>");
+<% end %>
+    $("#myTags").tagit({
+      availableTags: tags
+    });
+  });
+</script>
+<%= javascript_include_tag "ckeditor/init" %>
+<%= form_for @post, :html => { :class => 'form-horizontal' } do |f| %>
+  <% if @post.errors.any?   %>
+    <div class="alert alert-error">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <ul>
+        <% @post.errors.full_messages.each do |msg|  %>
+          <li><%= msg %></li>
+        <% end   %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="control-group">
+    <%= f.label :title, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :title, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :category, :class => 'control-label' %>
+    <div class="controls">
+      <%=  select("post", "post_category_id", PostCategory.all.collect {|p| [ p.name, p.id ] }, { :include_blank => true }) %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= cktext_area_tag("post[description]", @post.description, :input_html => {:cols => 13, :rows => 20}, :toolbar => 'Easy') %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :picture, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.file_field :picture, :class => 'file_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :tags, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tag_list, :class => 'tagit ui-widget ui-widget-content ui-corner-all', :id=> 'myTags' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :state, :class => 'control-label' %>
+    <div class="controls">
+      <label class="radio">
+        <%= radio_button("post", "state", TRUE, :checked => true) %>
+        <%= label_tag(:state, "publish") %>
+      </label>
+      <label class="radio">
+        <%= radio_button("post", "state", FALSE) %>
+        <%= label_tag(:state, "draft") %>
+      </label>
+    </div>
+  </div>
+
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+      posts_path, :class => 'btn' %>
+  </div>
+<% end %>

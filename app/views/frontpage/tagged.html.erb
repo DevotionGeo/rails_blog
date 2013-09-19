@@ -1,0 +1,17 @@
+<div class="span8">
+  <% @posts.each do |post| %>
+    <h2><%= post.title   %></h2>
+    <p><%=
+      post.description.html_safe
+    %></p>
+    <% post.tags.any? %>
+    <% post.tags.each do |tag| %>
+      <%= link_to taggedfront_url(:tag => tag.name) do %>
+        <span class="label label-info"><i class="icon-tag"></i> <%= tag.name %></span>
+      <% end  %>
+    <% end %>
+    <p><%= link_to "Detail »", detail_post_path(post), :class => "btn"   %></p>
+    <hr />
+  <% end %>
+  <%= paginate @posts if controller.action_name == 'index' %>
+</div>
